@@ -4,7 +4,7 @@ import { faPlay, faForward, faBackward } from "@fortawesome/free-solid-svg-icons
 
 export default function Controls() {
     return (
-        <div className="controls">
+        <div className="controls-container">
             <div className="time-control">
                 <p>Start Time</p>
                 <input type="range" />
