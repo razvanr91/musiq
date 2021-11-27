@@ -1,11 +1,11 @@
 import React from "react";
 
-export default function Song() {
+export default function Song({ currentSong }) {
     return (
         <div className="song-container">
-            <h1>Picture</h1>
-            <h2>Song Name</h2>
-            <h3>Artist</h3>
+            <img src={currentSong.cover} />
+            <h2>{currentSong.name}</h2>
+            <h3>{currentSong.artist}</h3>
         </div>
     );
 }
