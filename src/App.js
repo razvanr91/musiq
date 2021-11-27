@@ -9,11 +9,12 @@ function App() {
   // State
   const [songs, setSongs] = useState(ChillHop());
   const [currentSong, setCurrentSong] = useState(songs[0])
+  const [isPlaying, setIsPlaying] = useState(false);
 
   return (
     <div className="App">
       <Song currentSong={currentSong} />
-      <Controls />
+      <Controls currentSong={currentSong} isPlaying={isPlaying} setIsPlaying={setIsPlaying} />
     </div>
   );
 }
