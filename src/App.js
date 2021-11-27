@@ -4,6 +4,7 @@ import ChillHop from "./data";
 
 import Song from "./components/Song";
 import Controls from "./components/Controls";
+import Library from "./components/Library";
 
 function App() {
   // State
@@ -15,6 +16,7 @@ function App() {
     <div className="App">
       <Song currentSong={currentSong} />
       <Controls currentSong={currentSong} isPlaying={isPlaying} setIsPlaying={setIsPlaying} />
+      <Library songs={songs} currentSong={currentSong} />
     </div>
   );
 }
