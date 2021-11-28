@@ -26,7 +26,7 @@ export default function Controls({ audioRef, isPlaying, setIsPlaying, songInfo, 
         <div className="controls-container">
             <div className="time-control">
                 <p>{timeFormat(songInfo.playingAt)}</p>
-                <input onChange={dragHandler} type="range" min="0" max={songInfo.duration ? songInfo.duration : "0:00"} value={songInfo.playingAt} />
+                <input onChange={dragHandler} type="range" min="0" max={songInfo.duration || "0:00"} value={songInfo.playingAt} />
                 <p>{timeFormat(songInfo.duration)}</p>
             </div>
             <div className="control-buttons">
