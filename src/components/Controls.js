@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faPause, faForward, faBackward } from "@fortawesome/free-solid-svg-icons";
 
-export default function Controls({ audioRef, isPlaying, setIsPlaying, songInfo, setSongInfo, songs, currentSong, setCurrentSong }) {
-    // State
+export default function Controls({ audioRef, isPlaying, setIsPlaying, songInfo, setSongInfo, songs, currentSong, setCurrentSong, setSongs }) {
+    // Use Effect
+    useEffect(() => {
+        const newSongs = songs.map(song => {
+            if (song.id === currentSong.id) {
+                return { ...song, active: true };
+            } else {
+                return { ...song, active: false };
+            }
+        })
+        setSongs(newSongs);
+    }, [currentSong])
 
     function playSongHandler(e) {
         isPlaying ? audioRef.current.pause() : audioRef.current.play();
@@ -22,19 +32,22 @@ export default function Controls({ audioRef, isPlaying, setIsPlaying, songInfo, 
         });
     }
 
-    function trackChangeHandler(direction) {
+    async function trackChangeHandler(direction) {
         let currentTrackIndex = songs.findIndex(song => song.id === currentSong.id);
         if (direction === "next") {
-            setCurrentSong(songs[(currentTrackIndex + 1) % songs.length]);
+            await setCurrentSong(songs[(currentTrackIndex + 1) % songs.length]);
         }
 
         if (direction === "previous") {
             if ((currentTrackIndex - 1) % songs.length === -1) {
-                setCurrentSong(songs[songs.length - 1]);
+                await setCurrentSong(songs[songs.length - 1]);
+                if (isPlaying) audioRef.current.play();
                 return;
             }
-            setCurrentSong(songs[(currentTrackIndex - 1) % songs.length]);
+            await setCurrentSong(songs[(currentTrackIndex - 1) % songs.length]);
         }
+
+        if (isPlaying) audioRef.current.play();
     }
 
     return (
@@ -42,7 +55,7 @@ export default function Controls({ audioRef, isPlaying, setIsPlaying, songInfo, 
             <div className="time-control">
                 <p>{timeFormat(songInfo.playingAt)}</p>
                 <input onChange={dragHandler} type="range" min="0" max={songInfo.duration || "0:00"} value={songInfo.playingAt} />
-                <p>{timeFormat(songInfo.duration)}</p>
+                <p>{songInfo.duration ? timeFormat(songInfo.duration) : "0:00"}</p>
             </div>
             <div className="control-buttons">
                 <FontAwesomeIcon onClick={() => trackChangeHandler("previous")} className="previousButton" size="2x" icon={faBackward} />
