@@ -50,11 +50,19 @@ export default function Controls({ audioRef, isPlaying, setIsPlaying, songInfo, 
         if (isPlaying) audioRef.current.play();
     }
 
+    const trackAnimation = {
+        transform: `translateX(${songInfo.animationPercentage}%)`,
+    };
+
     return (
         <div className="controls-container">
             <div className="time-control">
                 <p>{timeFormat(songInfo.playingAt)}</p>
-                <input onChange={dragHandler} type="range" min="0" max={songInfo.duration || "0:00"} value={songInfo.playingAt} />
+                <div style={{ background: `linear-gradient(to right, ${currentSong.color[0]}, ${currentSong.color[1]})` }} className="progress">
+                    <input onChange={dragHandler} type="range" min="0" max={songInfo.duration || "0:00"} value={songInfo.playingAt} />
+                    <div style={trackAnimation} className="animate-progress"></div>
+                </div>
+
                 <p>{songInfo.duration ? timeFormat(songInfo.duration) : "0:00"}</p>
             </div>
             <div className="control-buttons">
