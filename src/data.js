@@ -68,7 +68,7 @@ export default function chillHop() {
             cover: "https://i.scdn.co/image/ab67616d0000b273c266150b4cdccf2ced31d166",
             id: uuid(),
             active: false,
-            colors: ["#FBB697", "#D7C1C3"],
+            color: ["#FCEFDE", "#E4C3BE"],
             audio: "https://mp3.chillhop.com/serve.php/?mp3=8266"
         },
     ]

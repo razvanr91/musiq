@@ -1,19 +1,18 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faPause, faForward, faBackward } from "@fortawesome/free-solid-svg-icons";
 
 export default function Controls({ audioRef, isPlaying, setIsPlaying, songInfo, setSongInfo, songs, currentSong, setCurrentSong, setSongs }) {
-    // Use Effect
-    useEffect(() => {
+    function libraryHandler(where) {
         const newSongs = songs.map(song => {
-            if (song.id === currentSong.id) {
+            if (song.id === where.id) {
                 return { ...song, active: true };
             } else {
                 return { ...song, active: false };
             }
         })
         setSongs(newSongs);
-    }, [currentSong])
+    }
 
     function playSongHandler(e) {
         isPlaying ? audioRef.current.pause() : audioRef.current.play();
@@ -32,22 +31,25 @@ export default function Controls({ audioRef, isPlaying, setIsPlaying, songInfo, 
         });
     }
 
-    async function trackChangeHandler(direction) {
+    const trackChangeHandler = async (direction) => {
         let currentTrackIndex = songs.findIndex(song => song.id === currentSong.id);
         if (direction === "next") {
             await setCurrentSong(songs[(currentTrackIndex + 1) % songs.length]);
+            libraryHandler(songs[(currentTrackIndex + 1) % songs.length])
         }
 
         if (direction === "previous") {
             if ((currentTrackIndex - 1) % songs.length === -1) {
                 await setCurrentSong(songs[songs.length - 1]);
+                libraryHandler(songs[songs.length - 1])
                 if (isPlaying) audioRef.current.play();
                 return;
             }
             await setCurrentSong(songs[(currentTrackIndex - 1) % songs.length]);
+            libraryHandler(songs[(currentTrackIndex - 1) % songs.length])
         }
 
-        if (isPlaying && currentSong !== null) audioRef.current.play();
+        if (isPlaying) audioRef.current.play();
     }
 
     const trackAnimation = {
