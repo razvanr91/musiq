@@ -73,3 +73,12 @@ input[type="range"]::-moz-focus-outer {
 input[type="range"]::-moz-focus-inner {
 	border: none;
 }
+
+@media screen and (max-width: 768px) {
+	.time-control {
+		width: 90%;
+	}
+	.control-buttons {
+		width: 60%;
+	}
+}

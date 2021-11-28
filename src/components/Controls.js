@@ -47,7 +47,7 @@ export default function Controls({ audioRef, isPlaying, setIsPlaying, songInfo, 
             await setCurrentSong(songs[(currentTrackIndex - 1) % songs.length]);
         }
 
-        if (isPlaying) audioRef.current.play();
+        if (isPlaying && currentSong !== null) audioRef.current.play();
     }
 
     const trackAnimation = {

@@ -19,7 +19,7 @@ export default function ListSong({ currentSong, setCurrentSong, songs, audioRef,
             }
         })
 
-        setSongs(newSongs);
+        await setSongs(newSongs);
         if (isPlaying) audioRef.current.play();
     }
 
