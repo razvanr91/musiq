@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import "./styles/app.scss";
 import ChillHop from "./data";
 
@@ -7,16 +7,33 @@ import Controls from "./components/Controls";
 import Library from "./components/Library";
 
 function App() {
+  // Reference
+  const audioRef = useRef(null);
   // State
   const [songs, setSongs] = useState(ChillHop());
   const [currentSong, setCurrentSong] = useState(songs[0])
   const [isPlaying, setIsPlaying] = useState(false);
+  const [songInfo, setSongInfo] = useState({
+    playingAt: 0,
+    duration: 0
+  })
+
+  function timeUpdateHandler(e) {
+    let current = e.target.currentTime;
+    let duration = e.target.duration
+    setSongInfo({
+      ...songInfo,
+      playingAt: current,
+      duration
+    })
+  }
 
   return (
     <div className="App">
       <Song currentSong={currentSong} />
-      <Controls currentSong={currentSong} isPlaying={isPlaying} setIsPlaying={setIsPlaying} />
-      <Library songs={songs} currentSong={currentSong} setCurrentSong={setCurrentSong} />
+      <Controls audioRef={audioRef} isPlaying={isPlaying} setIsPlaying={setIsPlaying} songInfo={songInfo} setSongInfo={setSongInfo} />
+      <audio onLoadedMetadata={timeUpdateHandler} onTimeUpdate={timeUpdateHandler} ref={audioRef} src={currentSong.audio} />
+      <Library songs={songs} currentSong={currentSong} setCurrentSong={setCurrentSong} audioRef={audioRef} isPlaying={isPlaying} setSongs={setSongs} />
     </div>
   );
 }
